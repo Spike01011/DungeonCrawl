@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class MaxHpItem : Items
 {
-    public MaxHpItem(): base(0, 0, 25, 0)
+    public MaxHpItem()
     {
-
+        movementSpeedMulti = 0;
+        attackSpeedMulti = 0;
+        maxHpBonus = 25;
+        percentageMaxHpBonus = 0;
     }
     // Start is called before the first frame update
     void Start()

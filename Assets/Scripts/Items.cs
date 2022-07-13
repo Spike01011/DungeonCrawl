@@ -7,17 +7,10 @@ using UnityEngine;
 public class Items : MonoBehaviour
 {
     protected float movementSpeedMulti;
-    private float AttackSpeedMulti;
-    private float MaxHpBonus;
-    private float PercentageMaxHpBonus;
+    protected float attackSpeedMulti;
+    protected float maxHpBonus;
+    protected float percentageMaxHpBonus;
     
-    public Items(float movementSpeedMulti, float attackSpeedMulti, float maxHpBonus, float percentageMaxHpBonus)
-    {
-        this.movementSpeedMulti = movementSpeedMulti;
-        AttackSpeedMulti = attackSpeedMulti;
-        MaxHpBonus = maxHpBonus;
-        PercentageMaxHpBonus = percentageMaxHpBonus;
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -35,9 +28,9 @@ public class Items : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             var player = other.gameObject.GetComponent<PlayerController>();
-            player.hp += MaxHpBonus;
-            player.hpMult += PercentageMaxHpBonus;
-            player.attackSpeedMult += AttackSpeedMulti;
+            player.hp += maxHpBonus;
+            player.hpMult += percentageMaxHpBonus;
+            player.attackSpeedMult += attackSpeedMulti;
             player.speedMult += movementSpeedMulti;
             Destroy(gameObject);
         }

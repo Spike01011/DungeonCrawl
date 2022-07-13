@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class MovementSpeedItem : Items 
 {
-    public MovementSpeedItem() : base(0.1f, 0, 0, 0)
+    public MovementSpeedItem()
     {
-
+        movementSpeedMulti = 0.1f;
+        attackSpeedMulti = 0;
+        maxHpBonus = 0;
+        percentageMaxHpBonus = 0;
     }
     // Start is called before the first frame update
     void Start()
