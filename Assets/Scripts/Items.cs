@@ -4,21 +4,25 @@ using System.IO.Enumeration;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Items : MonoBehaviour
+public class Items : MyMasterEntity
 {
-    protected float movementSpeedMulti;
-    protected float attackSpeedMulti;
-    protected float maxHpBonus;
-    protected float percentageMaxHpBonus;
+
+    public Items()
+    {
+        movementSpeedMulti = 0;
+        attackSpeedMulti = 0;
+        maxHpBonus = 0;
+        percentageMaxHpBonus = 0;
+    }
     
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    internal override void Start()
+    { 
+
     }
 
     // Update is called once per frame
-    void Update()
+    internal override void Update()
     {
         
     }
