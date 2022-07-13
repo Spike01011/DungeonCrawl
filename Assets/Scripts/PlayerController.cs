@@ -152,5 +152,15 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector3(0, 0, 0);
         }
         //rb.velocity = Input.GetAxis("Horizontal") == 0 ? cameraFocusPoint.transform.forward * Input.GetAxis("Vertical") * Time.deltaTime * actualSpeed : Input.GetAxis("Vertical") == 0 ? cameraFocusPoint.transform.forward * Input.GetAxis("Horizontal") * Time.deltaTime * actualSpeed : cameraFocusPoint.transform.forward * (Input.GetAxis("Vertical") + Input.GetAxis("Horizontal"))/2 * Time.deltaTime * actualSpeed;
+    
+
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("DragonJaw"))
+        {
+            Debug.Log(transform.position - other.gameObject.transform.position);
+        }
     }
 }
