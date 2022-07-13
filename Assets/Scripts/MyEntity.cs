@@ -4,11 +4,22 @@ using UnityEngine;
 
 public abstract class MyEntity : MyMasterEntity
 {
-    public float hp = 100f;
-    public float damage = 10f;
-    public float movementSpeed = 200f;
-    public float attackSpeed = 1f;
-    public float damageMult = 1.0f;
+    private Animator anim;
+    private Rigidbody rb;
+
+    public float baseHp = 100f;
+    public float baseDamage = 10f;
+    public float baseAttackSpeed = 1f;
+    public float baseSpeed = 10000f;
+
+    public float speed;
+    public float damage;
+    public float hp;
+    public float attackSpeed;
+
+    public bool isRunning = false;
+
+    public int isRunningHash;
 
     public MyEntity()
     {
@@ -16,6 +27,7 @@ public abstract class MyEntity : MyMasterEntity
         movementSpeedMulti = 1.0f;
         attackSpeedMulti = 1.0f;
         percentageMaxHpBonus = 1.0f;
+        damageMult = 1.0f;
     }
     
     // Start is called before the first frame update

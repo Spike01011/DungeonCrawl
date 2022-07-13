@@ -8,9 +8,10 @@ public abstract class MyMasterEntity : MonoBehaviour
     protected float attackSpeedMulti;
     protected float maxHpBonus;
     protected float percentageMaxHpBonus;
+    protected float damageMult;
     // Start is called before the first frame update
     internal abstract void Start();
 
     // Update is called once per frame
-    internal abstract void Update();
+    internal abstract void FixedUpdate();
 }

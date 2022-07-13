@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Items : MyMasterEntity
 {
+    private float critChance = 0;
 
     public Items()
     {
@@ -13,6 +14,7 @@ public class Items : MyMasterEntity
         attackSpeedMulti = 0;
         maxHpBonus = 0;
         percentageMaxHpBonus = 0;
+        damageMult = 0;
     }
     
     // Start is called before the first frame update
@@ -22,7 +24,7 @@ public class Items : MyMasterEntity
     }
 
     // Update is called once per frame
-    internal override void Update()
+    internal override void FixedUpdate()
     {
         
     }
