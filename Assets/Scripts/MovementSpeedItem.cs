@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class MovementSpeedItem : Items 
 {
-    public MovementSpeedItem()
-    {
-        movementSpeedMulti = 0.1f;
-        attackSpeedMulti = 0;
-        maxHpBonus = 0;
-        percentageMaxHpBonus = 0;
-    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        speedMult = 0.1f;
     }
 
     // Update is called once per frame

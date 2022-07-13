@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class MyMasterEntity : MonoBehaviour
 {
-    protected float movementSpeedMulti;
-    protected float attackSpeedMulti;
-    protected float maxHpBonus;
-    protected float percentageMaxHpBonus;
-    protected float damageMult;
+    internal float speedMult;
+    internal float attackSpeedMult;
+    internal float damageMult;
+    internal float hpMult;
+
     // Start is called before the first frame update
     internal abstract void Start();
 

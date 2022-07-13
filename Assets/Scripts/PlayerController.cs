@@ -6,24 +6,17 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MyEntity
 {
-    private Animator playerAnim;
     private GameObject cameraFocusPoint;
-    private Rigidbody rb;
 
-    [SerializeField] private float speed = 10000f;
-    public float speedMult = 1.0f;
+
     [SerializeField] private float runAngleModifier = 0;
-    [SerializeField] private float jumpDurationMulti = 1.0f;
-    [SerializeField] private float actualSpeed;
-    [SerializeField] private float jumpForce = 500f;
-    [SerializeField] private float oldspeedMult = 1.0f;
-    public float hp = 100;
-    [SerializeField]private float attackSpeed = 1;
-    public float attackSpeedMult = 1.0f;
+    [SerializeField] private float jumpDurationMulti;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float oldspeedMult;
     public float hpMult = 1.0f;
-    [SerializeField] int actualHp;
+    internal float critChance = 0;
 
 
     private int runForward = 0;
@@ -47,43 +40,65 @@ public class PlayerController : MonoBehaviour
     private int jumpDurationMultHash;
     private int isRunningHash;
 
+    public PlayerController()
+    {
+
+    }
+
 
     // Start is called before the first frame update
-    void Start()
+    internal override void Start()
     {
         cameraFocusPoint = GameObject.Find("Focus");
-        playerAnim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         speedMultHash = Animator.StringToHash("SpeedMult");
         jumpHash = Animator.StringToHash("Jump");
         isRunningHash = Animator.StringToHash("IsRunning");
-        playerAnim.SetFloat(speedMultHash, speedMult);
+        anim.SetFloat(speedMultHash, speedMult);
         jumpDurationMultHash = Animator.StringToHash("JumpMotionMult");
-        playerAnim.SetFloat(jumpDurationMultHash, jumpDurationMulti);
+        anim.SetFloat(jumpDurationMultHash, jumpDurationMulti);
 
-        speed = 500f;
+        baseDamage = 10f;
+        baseAttackSpeed = 1f;
+        baseSpeed = 500f;
+        baseHp = 100;
+        jumpForce = 500f;
+
+        attackSpeedMult = 1.0f;
+        damageMult = 1.0f;
         speedMult = 1.0f;
         jumpDurationMulti = 1.0f;
-        jumpForce = 500f;
-        oldspeedMult = 10000f;
+        oldspeedMult = 1.0f;
+        hpMult = 1.0f;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    internal override void FixedUpdate()
     {
-        actualHp = Convert.ToInt32(hp * this.hpMult);
+        hp = Convert.ToInt32(baseHp * hpMult);
         w = Input.GetKey(KeyCode.W);
         a = Input.GetKey(KeyCode.A);
         s = Input.GetKey(KeyCode.S);
         d = Input.GetKey(KeyCode.D);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            playerAnim.SetTrigger(jumpHash);
-            rb.velocity = transform.up * Time.deltaTime * jumpForce;
-        }
+        Jump();
 
-        actualSpeed = speed * speedMult;
+        speed = baseSpeed * speedMult;
+        Move();
+
+
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("DragonJaw"))
+        {
+        }
+    }
+
+    internal override void Move()
+    {
         if (w || a || s || d)
         {
             isRunning = true;
@@ -126,41 +141,35 @@ public class PlayerController : MonoBehaviour
             runAngleModifier = runRight;
         }
 
-        //transform.rotation = Quaternion.Euler(0, runAngleModifier, 0);
-        //transform.rotation = cameraFocusPoint.transform.rotation;
-        //transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, cameraFocusPoint.transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-        //transform.Rotate(Vector3.up, runAngleModifier);
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, cameraFocusPoint.transform.rotation.eulerAngles.y + runAngleModifier, transform.rotation.eulerAngles.z);
 
         if (speedMult != oldspeedMult)
         {
             oldspeedMult = speedMult;
-            playerAnim.SetFloat(speedMultHash, speedMult);
+            anim.SetFloat(speedMultHash, speedMult);
         }
 
-        if (isRunning != playerAnim.GetBool(isRunningHash))
+        if (isRunning != anim.GetBool(isRunningHash))
         {
-            playerAnim.SetBool(isRunningHash, isRunning);
+            anim.SetBool(isRunningHash, isRunning);
         }
 
         if (isRunning)
         {
-            rb.velocity = transform.forward * Time.deltaTime * actualSpeed;
+            rb.velocity = transform.forward * Time.deltaTime * speed;
         }
         else
         {
             rb.velocity = new Vector3(0, 0, 0);
         }
-        //rb.velocity = Input.GetAxis("Horizontal") == 0 ? cameraFocusPoint.transform.forward * Input.GetAxis("Vertical") * Time.deltaTime * actualSpeed : Input.GetAxis("Vertical") == 0 ? cameraFocusPoint.transform.forward * Input.GetAxis("Horizontal") * Time.deltaTime * actualSpeed : cameraFocusPoint.transform.forward * (Input.GetAxis("Vertical") + Input.GetAxis("Horizontal"))/2 * Time.deltaTime * actualSpeed;
-    
-
     }
 
-    void OnTriggerEnter(Collider other)
+    void Jump()
     {
-        if (other.gameObject.CompareTag("DragonJaw"))
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            Debug.Log(transform.position - other.gameObject.transform.position);
+            anim.SetTrigger(jumpHash);
+            rb.velocity = transform.up * Time.deltaTime * jumpForce;
         }
     }
 }

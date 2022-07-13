@@ -17,13 +17,6 @@ public class Dragon : MyEntity
     private int isDieHash;
     private int isAttackHash;
 
-    public Dragon()
-    {
-    baseDamage = 10f;
-    baseAttackSpeed = 1f;
-    baseHp = 200f;
-    baseSpeed = 10000f;
-    }
 
     internal override void Start()
     {
@@ -33,15 +26,25 @@ public class Dragon : MyEntity
         isDieHash = Animator.StringToHash("isDie");
         isRunningHash = Animator.StringToHash("isWalk");
         isAttackHash = Animator.StringToHash("Attack");
+
+        baseDamage = 10f;
+        baseAttackSpeed = 1f;
+        baseHp = 200f;
+        baseSpeed = 600f;
+
+        speedMult = 1.0f;
+        attackSpeedMult = 1.0f;
+        damageMult = 1.0f;
+        hpMult = 1.0f;
     }
 
 
     internal override void FixedUpdate()
     {
-        hp = baseHp * percentageMaxHpBonus;
-        speed = baseSpeed * movementSpeedMulti;
+        hp = baseHp * hpMult;
+        speed = baseSpeed * speedMult;
         damage = baseDamage * damageMult;
-        attackSpeed = baseAttackSpeed * attackSpeedMulti;
+        attackSpeed = baseAttackSpeed * attackSpeedMult;
 
         RotateTowardsPlayer();
 
@@ -77,7 +80,8 @@ public class Dragon : MyEntity
     {
         isRunning = true;
         entityAnim.SetBool(isRunningHash, isRunning);
-        rb.velocity = transform.forward * Time.deltaTime * speed/20;
+        rb.velocity = transform.forward * speed * Time.deltaTime;
+        Debug.Log(rb.velocity);
     }
 
     internal void Attack()
