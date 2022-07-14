@@ -6,6 +6,7 @@ TagManager:
   tags:
   - player
   - DragonJaw
+  - Enemy
   layers:
   - Default
   - TransparentFX

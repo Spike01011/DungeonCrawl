@@ -11,6 +11,7 @@ public abstract class MyEntity : MyMasterEntity
     public float baseDamage = 10f;
     public float baseAttackSpeed = 1f;
     public float baseSpeed = 10000f;
+    public float experience;
 
     public float speed;
     public float damage;

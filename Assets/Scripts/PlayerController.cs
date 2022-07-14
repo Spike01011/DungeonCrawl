@@ -67,10 +67,12 @@ public class PlayerController : MyEntity
 
         attackSpeedMult = 1.0f;
         damageMult = 1.0f;
-        speedMult = 1.0f;
+        this.speedMult = 1.0f;
         jumpDurationMulti = 1.0f;
         oldspeedMult = 1.0f;
         hpMult = 1.0f;
+
+        anim.SetFloat(speedMultHash, speedMult);
     }
 
     // Update is called once per frame

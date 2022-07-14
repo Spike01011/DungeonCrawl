@@ -30,7 +30,7 @@ public class Dragon : MyEntity
         baseDamage = 10f;
         baseAttackSpeed = 1f;
         baseHp = 200f;
-        baseSpeed = 600f;
+        baseSpeed = 300f;
 
         speedMult = 1.0f;
         attackSpeedMult = 1.0f;
@@ -81,7 +81,6 @@ public class Dragon : MyEntity
         isRunning = true;
         entityAnim.SetBool(isRunningHash, isRunning);
         rb.velocity = transform.forward * speed * Time.deltaTime;
-        Debug.Log(rb.velocity);
     }
 
     internal void Attack()
