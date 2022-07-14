@@ -15,7 +15,6 @@ public class PlayerController : MyEntity
     [SerializeField] private float jumpDurationMulti;
     [SerializeField] private float jumpForce;
     [SerializeField] private float oldspeedMult;
-    public float hpMult = 1.0f;
     internal float critChance = 0;
 
 
@@ -27,23 +26,19 @@ public class PlayerController : MyEntity
     private int runForwardRight = 45;
     private int runBackwardLeft = -135;
     private int runBackwardRight = 135;
+    internal float maxHp;
 
     private bool isGrounded = true;
     private bool w;
     private bool a;
     private bool s;
     private bool d;
-    private bool isRunning = false;
 
     private int jumpHash;
     private int speedMultHash;
     private int jumpDurationMultHash;
-    private int isRunningHash;
 
-    public PlayerController()
-    {
 
-    }
 
 
     // Start is called before the first frame update
@@ -59,8 +54,8 @@ public class PlayerController : MyEntity
         jumpDurationMultHash = Animator.StringToHash("JumpMotionMult");
         anim.SetFloat(jumpDurationMultHash, jumpDurationMulti);
 
-        baseDamage = 10f;
-        baseAttackSpeed = 1f;
+        baseDamage = 20f;
+        baseAttackSpeed = 1.5f;
         baseSpeed = 500f;
         baseHp = 100;
         jumpForce = 500f;
@@ -73,11 +68,18 @@ public class PlayerController : MyEntity
         hpMult = 1.0f;
 
         anim.SetFloat(speedMultHash, speedMult);
+
+        maxHp = baseHp * hpMult;
+        hp = maxHp;
     }
 
     // Update is called once per frame
     internal override void FixedUpdate()
     {
+        damage = baseDamage * damageMult;
+        speed = baseSpeed * speedMult;
+        attackSpeed = baseAttackSpeed * attackSpeedMult;
+
         hp = Convert.ToInt32(baseHp * hpMult);
         w = Input.GetKey(KeyCode.W);
         a = Input.GetKey(KeyCode.A);

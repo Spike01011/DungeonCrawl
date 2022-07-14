@@ -1,35 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
     public List<GameObject> enemyList = new List<GameObject>();
     public List<GameObject> itemList = new List<GameObject>();
-    private Dictionary<List<GameObject>, float> spawnsAndCosts = new Dictionary<List<GameObject>, float>();
+    private Dictionary<GameObject, float> spawnsAndCosts = new Dictionary<GameObject, float>();
+    private GameObject player;
 
-    private float experience;
+    internal float experience;
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Player");
         experience = 100;
-        spawnsAndCosts[new List<GameObject>() { enemyList[0] }] = 30;
+        spawnsAndCosts[enemyList[0]] = 30;
+        StartCoroutine(ManageExpMult());
+
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        float minimumExpCost = enemyList.Min(x => x.GetComponent<MyEntity>().experience);
         int randomEnemyToSpawn = Random.Range(0, spawnsAndCosts.Count);
-        foreach (var elem in spawnsAndCosts.Keys.ElementAt(randomEnemyToSpawn))
+        if (experience > 0 && experience >= minimumExpCost)
         {
-            //var currentElem = Instantiate(elem);
-            //dynamic var controller;
-            //if (currentElem.gameObject.name == "Dragon")
-            //{
-            //    var controller = currentElem.GetComponent<Dragon>();
-            //}
-            
+            float maxX = Random.Range(player.transform.position.x + 20, player.transform.position.x + 100);
+            float minX = Random.Range(player.transform.position.x - 20, player.transform.position.x - 100);
+            float maxZ = Random.Range(player.transform.position.z + 20, player.transform.position.z + 100);
+            float minZ = Random.Range(player.transform.position.z - 20, player.transform.position.z - 100);
+            float[] xPotentialPos = new float[] { minX, maxX };
+            float[] zPotentialPos = new float[] { minZ, maxZ };
+            float xPos = xPotentialPos[Random.Range(0, xPotentialPos.Length)];
+            float zPos = zPotentialPos[Random.Range(0, zPotentialPos.Length)];
+            var currentSpawnedObject = Instantiate(spawnsAndCosts.Keys.ElementAt(randomEnemyToSpawn), new Vector3(xPos, 0, zPos), player.transform.rotation).GetComponent<Dragon>();
+            experience -= currentSpawnedObject.experience;
         }
+    }
+
+    IEnumerator ManageExpMult()
+    {
+        yield return new WaitForSeconds(60);
+        enemyList.ForEach(x => x.gameObject.GetComponent<MyEntity>().experienceMult *= 1.1f);
+        StartCoroutine(ManageExpMult());
     }
 }

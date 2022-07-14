@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 1784533787}
   - component: {fileID: 1784533791}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -775,6 +775,10 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1326801831}
+    - target: {fileID: 3440059752799910775, guid: 2004c0a5782ad6948823aef9c51fcf13, type: 3}
+      propertyPath: experience
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2004c0a5782ad6948823aef9c51fcf13, type: 3}
 --- !u!1001 &3629111245751610748

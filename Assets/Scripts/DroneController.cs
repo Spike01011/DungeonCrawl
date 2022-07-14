@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DroneController : MonoBehaviour
 {
@@ -16,11 +18,13 @@ public class DroneController : MonoBehaviour
     internal float critChance;
     internal float attackSpeed;
     internal float currentShotDamage;
+    private float timestamp;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        timestamp = Time.time + 1;
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
     }
@@ -32,7 +36,7 @@ public class DroneController : MonoBehaviour
         attackSpeed = playerController.attackSpeed;
         critChance = playerController.critChance;
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
             Shoot();
         }
@@ -40,21 +44,41 @@ public class DroneController : MonoBehaviour
 
     void Shoot()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
+        if (timestamp <= Time.time)
         {
-            if (hit.transform.CompareTag("Enemy"))
+            RaycastHit hit;
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
             {
-
-            }
-        };
+                try
+                {
+                    ToCritOrNotToCrit();
+                    hit.transform.gameObject.GetComponent<MyEntity>().takeDamage(damage);
+                }
+                catch (Exception e)
+                {
+                }
+                timestamp = Time.time + 1 / attackSpeed;
+            };
+        }
     }
 
     void ToCritOrNotToCrit()
     {
         if (critChance > 0 && critChance < 100)
         {
-
+            var chanceOutcome = Random.Range(1, 10);
+            if (chanceOutcome <= critChance)
+            {
+                currentShotDamage = damage * 2;
+            }
+        }
+        else if (critChance == 0)
+        {
+            currentShotDamage = damage;
+        }
+        else if (critChance == 100)
+        {
+            currentShotDamage = damage * 2;
         }
     }
 }

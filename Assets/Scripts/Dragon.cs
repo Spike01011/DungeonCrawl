@@ -7,8 +7,6 @@ using UnityEngine.AI;
 public class Dragon : MyEntity
 {
     private Animator entityAnim;
-    public GameObject Player;
-    private Rigidbody rb;
 
     float MinDist = 1.8f;
 
@@ -26,22 +24,23 @@ public class Dragon : MyEntity
         isDieHash = Animator.StringToHash("isDie");
         isRunningHash = Animator.StringToHash("isWalk");
         isAttackHash = Animator.StringToHash("Attack");
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
         baseDamage = 10f;
         baseAttackSpeed = 1f;
-        baseHp = 200f;
+        baseHp = 80f;
         baseSpeed = 300f;
 
         speedMult = 1.0f;
         attackSpeedMult = 1.0f;
         damageMult = 1.0f;
         hpMult = 1.0f;
+        hp = baseHp * hpMult;
     }
 
 
     internal override void FixedUpdate()
     {
-        hp = baseHp * hpMult;
         speed = baseSpeed * speedMult;
         damage = baseDamage * damageMult;
         attackSpeed = baseAttackSpeed * attackSpeedMult;
@@ -59,19 +58,14 @@ public class Dragon : MyEntity
     }
 
     
-    public void takeDamage(float amount)
-    {
-        hp -= amount;
-        if (hp <= 0f)
-        {
-            Die();
-        }
-    }
+
     public void Die()
     {
         isRunning = false;
         isDie = true;
         entityAnim.SetBool(isDieHash, isDie);
+        Player.GetComponent<PlayerController>().experience += experience * experienceMult;
+        spawnManager.experience += experience * experienceMult;
         Destroy(transform.gameObject);
 
     }
