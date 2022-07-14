@@ -81,7 +81,6 @@ public class Dragon : MyEntity
         isRunning = true;
         entityAnim.SetBool(isRunningHash, isRunning);
         rb.velocity = transform.forward * speed * Time.deltaTime;
-        Debug.Log(rb.velocity);
     }
 
     internal void Attack()
