@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LaserProj : MonoBehaviour
 {
+    public ParticleSystem hitParticles;
     internal float strength;
     internal float speed;
     private Rigidbody rb;
@@ -24,6 +25,7 @@ public class LaserProj : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Player"))
         {
+            Instantiate(hitParticles, collider.transform.position, hitParticles.transform.rotation);
             collider.gameObject.GetComponent<PlayerController>().takeDamage(strength);
         }
         if (!collider.gameObject.CompareTag("Enemy"))

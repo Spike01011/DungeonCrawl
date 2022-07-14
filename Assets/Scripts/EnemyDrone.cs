@@ -26,7 +26,7 @@ public class EnemyDrone : MyEntity
         playerController = Player.GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
 
-        baseDamage = 10f;
+        baseDamage = 15f;
         baseAttackSpeed = 1f;
         baseHp = 30f;
         baseSpeed = 200f;

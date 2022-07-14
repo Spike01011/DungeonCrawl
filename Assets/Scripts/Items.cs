@@ -6,9 +6,11 @@ using UnityEngine;
 
 public class Items : MyMasterEntity
 {
+
     internal float critChance = 0;
     internal float maxHpBonus = 0;
-
+    internal string itemName;
+    internal string itemDescription;
 
     // Start is called before the first frame update
     internal override void Start()
@@ -22,7 +24,7 @@ public class Items : MyMasterEntity
     // Update is called once per frame
     internal override void FixedUpdate()
     {
-        
+        transform.Rotate(Vector3.up);
     }
 
     void OnCollisionEnter(Collision other)
@@ -34,8 +36,12 @@ public class Items : MyMasterEntity
             player.hpMult += hpMult;
             player.attackSpeedMult += attackSpeedMult;
             player.speedMult += speedMult;
+            player.critChance += critChance;
+            player.damageMult += damageMult;
             Destroy(gameObject);
         }
     }
+
+
 
 }

@@ -9,6 +9,8 @@ public class MaxHpItem : Items
     // Start is called before the first frame update
     void Start()
     {
+        itemName = "Alien fruit";
+        itemDescription = "You're more healthy! (max hp up)";
         maxHpBonus = 25;
     }
 

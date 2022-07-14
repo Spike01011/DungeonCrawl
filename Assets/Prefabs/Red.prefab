@@ -249,18 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 880913d020aee944e97987b9d08db702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHp: 100
-  baseDamage: 10
-  baseAttackSpeed: 1
-  baseSpeed: 10000
-  experience: 15
-  experienceMult: 1.3310001
-  speed: 0
-  damage: 10
-  hp: 100
-  attackSpeed: 1
-  isRunning: 0
-  isRunningHash: 0
+  hitParticles: {fileID: 3199346384015752365, guid: 307229a5540374aae98859caad2128a3, type: 3}
 --- !u!65 &8417830017960808386
 BoxCollider:
   m_ObjectHideFlags: 0

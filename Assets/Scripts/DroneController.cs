@@ -12,6 +12,8 @@ public class DroneController : MonoBehaviour
     public Camera cam;
     private GameObject player;
     private PlayerController playerController;
+    public ParticleSystem friendlyParticle;
+    public ParticleSystem enemyParticle;
 
     private float range = 200f;
     internal float damage;
@@ -52,6 +54,14 @@ public class DroneController : MonoBehaviour
                 try
                 {
                     ToCritOrNotToCrit();
+                    if (hit.transform.gameObject.CompareTag("Enemy"))
+                    {
+                        Instantiate(enemyParticle, hit.transform.position, enemyParticle.transform.rotation);
+                    }
+                    else
+                    {
+                        Instantiate(friendlyParticle, hit.point, friendlyParticle.transform.rotation);
+                    }
                     hit.transform.gameObject.GetComponent<MyEntity>().takeDamage(damage, "enemy");
                 }
                 catch (Exception e)

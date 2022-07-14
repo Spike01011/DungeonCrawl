@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
 
 public class Dragon : MyEntity
 {
+    public ParticleSystem hitParticles;
     private Animator entityAnim;
 
     float MinDist = 1.8f;
@@ -91,6 +93,7 @@ public class Dragon : MyEntity
         {
             if (collider.CompareTag("Player"))
             {
+                Instantiate(hitParticles, collider.transform.position, hitParticles.transform.rotation);
                 collider.gameObject.GetComponent<PlayerController>().takeDamage(damage);
                 timestamp = Time.time + (1 / attackSpeed);
             }
