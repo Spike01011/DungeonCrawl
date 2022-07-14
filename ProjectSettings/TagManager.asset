@@ -6,8 +6,7 @@ TagManager:
   tags:
   - player
   - DragonJaw
-  - Drone
-  - laser
+  - Enemy
   layers:
   - Default
   - TransparentFX
