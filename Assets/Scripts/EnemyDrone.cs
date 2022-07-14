@@ -5,17 +5,13 @@ using UnityEngine;
 
 public class EnemyDrone : MyEntity
 {
-    public GameObject laserPrefab;
-    public GameObject specialPrefab;
-    public Camera cam;
-    private GameObject Player;
+    public GameObject laserPrefab;  
     private PlayerController playerController;
 
     private float range = 200f;
-    internal float damage;
-    internal float attackSpeed;
     internal float currentShotDamage;
     float MinDist = 10f;
+    float ShootDistance = 40f;
     public Vector3 route;
     int counter = 0;
 
@@ -26,14 +22,13 @@ public class EnemyDrone : MyEntity
     internal override void Start()
     {
         Player = GameObject.Find("Player");
-
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         playerController = Player.GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
 
-
         baseDamage = 10f;
         baseAttackSpeed = 1f;
-        baseHp = 200f;
+        baseHp = 30f;
         baseSpeed = 200f;
 
         speedMult = 1.0f;
@@ -41,54 +36,32 @@ public class EnemyDrone : MyEntity
         damageMult = 1.0f;
         hpMult = 1.0f;
 
+        hp = baseHp * hpMult;
+
         InvokeRepeating("Shoot", 1, 1);
 
+        transform.position = new Vector3(transform.position.x, 3, transform.position.z);
     }
 
-    // Update is called once per frame
     internal override void FixedUpdate()
     {
-
-        hp = baseHp * hpMult;
         speed = baseSpeed * speedMult;
         damage = baseDamage * damageMult;
         attackSpeed = baseAttackSpeed * attackSpeedMult;
         Move();
-
-
-        //route = new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z);
-        //var currentLaser = Instantiate(laserPrefab, this.transform.position + Vector3.forward * 2, Quaternion.identity, this.transform);
-        //currentLaser.transform.LookAt(route);
-        //currentLaser.transform.rotation = Quaternion.Euler(90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-        //var currentLaserScript = currentLaser.GetComponent<LaserProj>();
-        //currentLaserScript.speed = 100f;
-        //currentLaserScript.strength = damage;
-
-
-
     }
 
     void Shoot()
     {
-
-        var currentLaser = Instantiate(laserPrefab, transform.position, transform.rotation);
-        currentLaser.transform.LookAt(Player.transform.position);
-        currentLaser.transform.rotation = Quaternion.Euler(transform.localRotation.eulerAngles.x + 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-        var currentLaserScript = currentLaser.GetComponent<LaserProj>();
-        currentLaserScript.speed = 1000f;
-        currentLaserScript.strength = damage;
-        
-
-
-        //Instantiate(laser, Player.transform);
-        //RaycastHit hit;
-        //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
-        //
-            //if (hit.transform.CompareTag("Player"))
-            //{
-
-           // }
-        //};
+        if (Vector3.Distance(transform.position, Player.transform.position) <= ShootDistance)
+        {
+            var currentLaser = Instantiate(laserPrefab, transform.position, transform.rotation);
+            currentLaser.transform.LookAt(Player.transform.position);
+            currentLaser.transform.rotation = Quaternion.Euler(transform.localRotation.eulerAngles.x + 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+            var currentLaserScript = currentLaser.GetComponent<LaserProj>();
+            currentLaserScript.speed = 1000f;
+            currentLaserScript.strength = damage;
+        }
     }
     internal override void Move()
     {
