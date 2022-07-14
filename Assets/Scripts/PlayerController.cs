@@ -44,6 +44,8 @@ public class PlayerController : MyEntity
     // Start is called before the first frame update
     internal override void Start()
     {
+        Player = gameObject;
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         cameraFocusPoint = GameObject.Find("Focus");
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
