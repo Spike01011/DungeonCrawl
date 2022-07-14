@@ -17,7 +17,9 @@ public class SpawnManager : MonoBehaviour
     {
         player = GameObject.Find("Player");
         experience = 100;
-        spawnsAndCosts[enemyList[0]] = 30;
+        spawnsAndCosts[enemyList[0]] = 15;
+        spawnsAndCosts[enemyList[1]] = 20;
+
         StartCoroutine(ManageExpMult());
 
     }
@@ -25,7 +27,7 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float minimumExpCost = enemyList.Min(x => x.GetComponent<MyEntity>().experience);
+        float minimumExpCost = spawnsAndCosts.Min(x => x.Value);
         int randomEnemyToSpawn = Random.Range(0, spawnsAndCosts.Count);
         if (experience > 0 && experience >= minimumExpCost)
         {
@@ -38,7 +40,7 @@ public class SpawnManager : MonoBehaviour
             float xPos = xPotentialPos[Random.Range(0, xPotentialPos.Length)];
             float zPos = zPotentialPos[Random.Range(0, zPotentialPos.Length)];
             var currentSpawnedObject = Instantiate(spawnsAndCosts.Keys.ElementAt(randomEnemyToSpawn), new Vector3(xPos, 0, zPos), player.transform.rotation).GetComponent<Dragon>();
-            experience -= currentSpawnedObject.experience;
+            experience -= spawnsAndCosts.Values.ElementAt(randomEnemyToSpawn);
         }
     }
 

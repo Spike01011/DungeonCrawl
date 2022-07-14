@@ -173,7 +173,13 @@ public class PlayerController : MyEntity
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             anim.SetTrigger(jumpHash);
-            rb.velocity = transform.up * Time.deltaTime * jumpForce;
+            //rb.velocity = transform.up * Time.deltaTime * jumpForce;
+            rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
+
+            Vector3 velocity = ((transform.forward * speed)) * Time.fixedDeltaTime;
+            velocity.y = rb.velocity.y;
+            rb.velocity = velocity;
         }
     }
+   
 }

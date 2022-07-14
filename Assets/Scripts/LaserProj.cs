@@ -24,9 +24,9 @@ public class LaserProj : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Player"))
         {
-            //collision.gameObject.GetComponent<PlayerController>().takeDamage;
+            collider.gameObject.GetComponent<PlayerController>().takeDamage(strength);
         }
-        else if (!collider.gameObject.CompareTag("Drone"))
+        if (!collider.gameObject.CompareTag("Enemy"))
         {
             Destroy(this.gameObject);
         }
