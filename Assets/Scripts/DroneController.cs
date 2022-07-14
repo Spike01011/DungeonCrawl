@@ -52,7 +52,7 @@ public class DroneController : MonoBehaviour
                 try
                 {
                     ToCritOrNotToCrit();
-                    hit.transform.gameObject.GetComponent<MyEntity>().takeDamage(damage);
+                    hit.transform.gameObject.GetComponent<MyEntity>().takeDamage(damage, "enemy");
                 }
                 catch (Exception e)
                 {

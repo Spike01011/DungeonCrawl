@@ -9,21 +9,21 @@ public abstract class MyEntity : MyMasterEntity
     internal Animator anim;
     internal Rigidbody rb;
 
-    public float baseHp = 100f;
-    public float baseDamage = 10f;
-    public float baseAttackSpeed = 1f;
-    public float baseSpeed = 10000f;
-    public float experience;
-    public float experienceMult = 1.0f;
+    internal float baseHp = 100f;
+    internal float baseDamage = 10f;
+    internal float baseAttackSpeed = 1f;
+    internal float baseSpeed = 10000f;
+    internal float experience;
+    internal float experienceMult = 1.0f;
 
-    public float speed;
-    public float damage;
-    public float hp;
-    public float attackSpeed;
+    internal float speed;
+    internal float damage;
+    internal float hp;
+    internal float attackSpeed;
 
-    public bool isRunning = false;
+    internal bool isRunning = false;
 
-    public int isRunningHash;
+    internal int isRunningHash;
 
 
     // Start is called before the first frame update
@@ -34,20 +34,29 @@ public abstract class MyEntity : MyMasterEntity
 
     internal abstract void Move();
 
-    public void takeDamage(float amount)
+    public void takeDamage(float amount, string target="player")
     {
         hp -= amount;
-        if (hp <= 0f)
+        if (hp <= 0)
         {
             Die();
         }
-        Debug.Log(hp);
+        try
+        {
+            Debug.Log($"{target}: {amount}");
+
+        }
+        catch (System.Exception)
+        {
+            Debug.Log(amount);
+            throw;
+        }
     }
 
     public void Die()
     {
         Player.GetComponent<PlayerController>().experience += experience * experienceMult;
         spawnManager.experience += experience * experienceMult;
-        Destroy(transform.gameObject);
+        Destroy(gameObject);
     }
 }

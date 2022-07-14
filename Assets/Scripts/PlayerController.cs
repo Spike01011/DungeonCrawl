@@ -60,7 +60,7 @@ public class PlayerController : MyEntity
         baseAttackSpeed = 1.5f;
         baseSpeed = 500f;
         baseHp = 100;
-        jumpForce = 500f;
+        jumpForce = 20f;
 
         attackSpeedMult = 1.0f;
         damageMult = 1.0f;
@@ -159,15 +159,20 @@ public class PlayerController : MyEntity
         {
             anim.SetBool(isRunningHash, isRunning);
         }
-
+        int i = 0;
         if (isRunning)
         {
-            rb.velocity = transform.forward * Time.deltaTime * speed;
+            i = 1;
+            //rb.velocity = transform.forward * Time.deltaTime * speed;
         }
         else
-        {
-            rb.velocity = new Vector3(0, 0, 0);
+        {   i=0;
+            //rb.velocity = new Vector3(0, 0, 0);
+
         }
+        Vector3 velocity = ((transform.forward * i)) * speed * Time.fixedDeltaTime;
+        velocity.y = rb.velocity.y;
+        rb.velocity = velocity;
     }
 
     void Jump()
@@ -175,7 +180,11 @@ public class PlayerController : MyEntity
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             anim.SetTrigger(jumpHash);
-            rb.velocity = transform.up * Time.deltaTime * jumpForce;
+            //rb.velocity = transform.up * Time.deltaTime * jumpForce;
+            rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
+
+            
         }
     }
+   
 }

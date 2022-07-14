@@ -14,7 +14,7 @@ public class Dragon : MyEntity
 
     private int isDieHash;
     private int isAttackHash;
-
+    float timestamp;
 
     internal override void Start()
     {
@@ -26,9 +26,11 @@ public class Dragon : MyEntity
         isAttackHash = Animator.StringToHash("Attack");
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
+
+        timestamp = Time.time + 1;
         baseDamage = 10f;
         baseAttackSpeed = 1f;
-        baseHp = 80f;
+        baseHp = 70f;
         baseSpeed = 300f;
 
         speedMult = 1.0f;
@@ -83,6 +85,18 @@ public class Dragon : MyEntity
         entityAnim.SetBool(isRunningHash, isRunning);
         entityAnim.SetTrigger(isAttackHash);
     }
+    void OnTriggerEnter(Collider collider)
+    {
+        if (timestamp <= Time.time)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                collider.gameObject.GetComponent<PlayerController>().takeDamage(damage);
+                timestamp = Time.time + (1 / attackSpeed);
+            }
+        }
+    }
+
 
     internal void RotateTowardsPlayer()
     {
