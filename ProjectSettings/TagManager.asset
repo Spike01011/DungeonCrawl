@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Drone
   - Floor
+  - Focus
   layers:
   - Default
   - TransparentFX

@@ -403,21 +403,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435cdb802f6b8574b82d237f5f591c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHp: 100
-  baseDamage: 10
-  baseAttackSpeed: 1
-  baseSpeed: 10000
-  experience: 20
-  experienceMult: 2.8531172
-  speed: 0
-  damage: 0
-  hp: 0
-  attackSpeed: 0
-  isRunning: 0
-  isRunningHash: 0
-  laserPrefab: {fileID: 636736944350915378, guid: 0b716c5554885114a84c6e544ea57a8c, type: 3}
-  specialPrefab: {fileID: 0}
-  cam: {fileID: 0}
+  damageText: {fileID: 6346823381982712507, guid: 3ce07004bb9158d4bac7d022085253a5, type: 3}
+  laserPrefab: {fileID: 636736944350915378, guid: a41f67bbf53f63a418448e44e56b041b, type: 3}
   route: {x: 0, y: 0, z: 0}
 --- !u!65 &-6076683507863327789
 BoxCollider:

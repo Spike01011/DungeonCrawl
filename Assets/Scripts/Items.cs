@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Items : MyMasterEntity
 {
+    public GameObject infoText;
+
     internal float critChance = 0;
     internal float maxHpBonus = 0;
 
@@ -27,6 +29,8 @@ public class Items : MyMasterEntity
 
     void OnCollisionEnter(Collision other)
     {
+        ItemIndicator indicator = Instantiate(infoText, transform.position, Quaternion.identity).GetComponent<ItemIndicator>();
+        indicator.SetDamageText($"+{hpMult} hp");
         if (other.gameObject.CompareTag("Player"))
         {
             var player = other.gameObject.GetComponent<PlayerController>();

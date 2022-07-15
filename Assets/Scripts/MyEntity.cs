@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class MyEntity : MyMasterEntity
 {
     internal GameObject Player;
+    public GameObject damageText;
+
     internal SpawnManager spawnManager;
     internal Animator anim;
     internal Rigidbody rb;
@@ -37,6 +39,8 @@ public abstract class MyEntity : MyMasterEntity
     public void takeDamage(float amount, string target="player")
     {
         hp -= amount;
+        DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+        indicator.SetDamageText((int)amount);
         if (hp <= 0)
         {
             Die();

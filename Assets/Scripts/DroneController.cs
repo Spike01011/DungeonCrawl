@@ -13,6 +13,8 @@ public class DroneController : MonoBehaviour
     private GameObject player;
     private PlayerController playerController;
 
+    //LineRenderer laserLine;
+
     private float range = 200f;
     internal float damage;
     internal float critChance;
@@ -20,12 +22,15 @@ public class DroneController : MonoBehaviour
     internal float currentShotDamage;
     private float timestamp;
 
-
+    GameObject focus;
     // Start is called before the first frame update
     void Start()
     {
+        //laserLine = GetComponent<LineRenderer>();
+
         timestamp = Time.time + 1;
         player = GameObject.Find("Player");
+        focus = GameObject.Find("Focus");
         playerController = player.GetComponent<PlayerController>();
     }
 
@@ -35,6 +40,7 @@ public class DroneController : MonoBehaviour
         damage = playerController.damage;
         attackSpeed = playerController.attackSpeed;
         critChance = playerController.critChance;
+
 
         if (Input.GetButton("Fire1"))
         {
@@ -49,9 +55,17 @@ public class DroneController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
             {
+                transform.rotation = Quaternion.Euler(focus.transform.rotation.eulerAngles.x, focus.transform.rotation.eulerAngles.y - 5, 0);
+
                 try
                 {
                     ToCritOrNotToCrit();
+                    var playerLaser = Instantiate(laserPrefab, transform.position, focus.transform.rotation);
+                    playerLaser.transform.rotation = Quaternion.Euler(transform.localRotation.eulerAngles.x + 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+                    var laserScript = playerLaser.GetComponent<LaserPlayer>();
+                    laserScript.speed = 6000f;
+                    laserScript.strength = damage;
+
                     hit.transform.gameObject.GetComponent<MyEntity>().takeDamage(damage, "enemy");
                 }
                 catch (Exception e)

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -2843567714424153317}
   - component: {fileID: -35437029517264279}
   m_Layer: 0
-  m_Name: SingleLine-LightSaber
+  m_Name: SingleLine-LightSaber 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

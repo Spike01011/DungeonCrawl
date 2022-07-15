@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class Dragon : MyEntity
 {
+
     private Animator entityAnim;
 
     float MinDist = 1.8f;
