@@ -39,8 +39,11 @@ public abstract class MyEntity : MyMasterEntity
     public void takeDamage(float amount, string target="player")
     {
         hp -= amount;
-        DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
-        indicator.SetDamageText((int)amount);
+        if (!this.CompareTag("Player"))
+        {
+            DamageIndicator indicator = Instantiate(damageText, new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z), Quaternion.identity).GetComponent<DamageIndicator>();
+            indicator.SetDamageText((int)amount);
+        }
         if (hp <= 0)
         {
             Die();

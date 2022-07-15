@@ -30,8 +30,8 @@ public class Items : MyMasterEntity
 
     void OnCollisionEnter(Collision other)
     {
-        ItemIndicator indicator = Instantiate(infoText, transform.position, Quaternion.identity).GetComponent<ItemIndicator>();
-        indicator.SetDamageText($"+{hpMult} hp");
+        //ItemIndicator indicator = Instantiate(infoText, transform.position, Quaternion.identity).GetComponent<ItemIndicator>();
+        //indicator.SetDamageText($"+{hpMult} hp");
         if (other.gameObject.CompareTag("Player"))
         {
             var player = other.gameObject.GetComponent<PlayerController>();
