@@ -16,6 +16,7 @@ public class SpawnManager : MonoBehaviour
     private float itemSpawnRate = 10;
     private float spawnLocationVarietyRange;
     private float overallMult;
+    private float experienceMult;
     internal float experience;
     // Start is called before the first frame update
     void Start()
@@ -26,8 +27,10 @@ public class SpawnManager : MonoBehaviour
         spawnsAndCosts[enemyList[1]] = 20;
         InvokeRepeating("ManageMult", 60, 60);
         overallMult = 1.0f;
+        experienceMult = 1.0f;
         spawnLocationVarietyRange = 50;
-        Invoke("IncreaseDropRate", 2);
+        Invoke("IncreaseDropRate", 120);
+        InvokeRepeating("DifficultyBoost", 300, 300);
     }
 
     // Update is called once per frame
@@ -48,7 +51,7 @@ public class SpawnManager : MonoBehaviour
             var currentSpawnedObject = Instantiate(spawnsAndCosts.Keys.ElementAt(randomEnemyToSpawn), new Vector3(xPos, 0, zPos), player.transform.rotation).GetComponent<MyEntity>();
             currentSpawnedObject.attackSpeedMult = overallMult;
             currentSpawnedObject.damageMult = overallMult;
-            currentSpawnedObject.experienceMult = overallMult;
+            currentSpawnedObject.experienceMult = experienceMult;
             currentSpawnedObject.hpMult = overallMult;
             currentSpawnedObject.speedMult = overallMult;
             currentSpawnedObject.experience = spawnsAndCosts.Values.ElementAt(randomEnemyToSpawn);
@@ -60,6 +63,12 @@ public class SpawnManager : MonoBehaviour
     void ManageMult()
     {
         overallMult *= 1.1f;
+        experienceMult *= 1.1f;
+    }
+
+    void DifficultyBoost()
+    {
+        overallMult *= 1.2f;
     }
 
     public void TryToSpawnItem(Vector3 location)
@@ -77,7 +86,7 @@ public class SpawnManager : MonoBehaviour
         itemSpawnRate += 1;
         if (itemSpawnRate < 20)
         {
-            Invoke("IncreaseDropRate", 2);
+            Invoke("IncreaseDropRate", 120);
         }
     }
 }
