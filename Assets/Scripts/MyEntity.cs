@@ -47,12 +47,10 @@ public abstract class MyEntity : MyMasterEntity
         }
         try
         {
-            Debug.Log($"{target}: {amount}");
 
         }
         catch (System.Exception)
         {
-            Debug.Log(amount);
             throw;
         }
     }
@@ -61,6 +59,7 @@ public abstract class MyEntity : MyMasterEntity
     {
         Player.GetComponent<PlayerController>().experience += experience * experienceMult;
         spawnManager.experience += experience * experienceMult;
+        spawnManager.TryToSpawnItem(new Vector3(transform.position.x, 0.5f, transform.position.z));
         Destroy(gameObject);
     }
 }

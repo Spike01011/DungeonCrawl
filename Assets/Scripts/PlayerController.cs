@@ -8,7 +8,9 @@ using UnityEngine.Experimental.Rendering;
 
 public class PlayerController : MyEntity
 {
+    public ParticleSystem blinkParticles;
     private GameObject cameraFocusPoint;
+    private UiManager uiManager;
 
 
     [SerializeField] private float runAngleModifier = 0;
@@ -16,6 +18,9 @@ public class PlayerController : MyEntity
     [SerializeField] private float jumpForce;
     [SerializeField] private float oldspeedMult;
     internal float critChance = 0;
+    internal float level;
+    internal float xpForLevelUp;
+    internal float blinkDistance;
 
 
     private int runForward = 0;
@@ -29,6 +34,7 @@ public class PlayerController : MyEntity
     internal float maxHp;
 
     private bool isGrounded = true;
+    private float blinkTimestamp;
     private bool w;
     private bool a;
     private bool s;
@@ -44,6 +50,9 @@ public class PlayerController : MyEntity
     // Start is called before the first frame update
     internal override void Start()
     {
+        uiManager = GameObject.Find("UIManager").GetComponent<UiManager>();
+        Player = gameObject;
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         cameraFocusPoint = GameObject.Find("Focus");
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -53,40 +62,48 @@ public class PlayerController : MyEntity
         anim.SetFloat(speedMultHash, speedMult);
         jumpDurationMultHash = Animator.StringToHash("JumpMotionMult");
         anim.SetFloat(jumpDurationMultHash, jumpDurationMulti);
+        blinkTimestamp = Time.time + 1;
+
+        level = 1;
+        xpForLevelUp = 100;
 
         baseDamage = 20f;
         baseAttackSpeed = 1.5f;
         baseSpeed = 500f;
         baseHp = 100;
-        jumpForce = 20f;
+        jumpForce = 15f;
 
         attackSpeedMult = 1.0f;
         damageMult = 1.0f;
         this.speedMult = 1.0f;
-        jumpDurationMulti = 1.0f;
+        jumpDurationMulti = 0.2f;
         oldspeedMult = 1.0f;
         hpMult = 1.0f;
 
         anim.SetFloat(speedMultHash, speedMult);
+        anim.SetFloat(jumpDurationMultHash, jumpDurationMulti);
 
         maxHp = baseHp * hpMult;
         hp = maxHp;
+        InvokeRepeating("HpRegen", 1, 1);
     }
 
     // Update is called once per frame
     internal override void FixedUpdate()
     {
+        LevelUpCheck();
         damage = baseDamage * damageMult;
         speed = baseSpeed * speedMult;
+        blinkDistance = speed / 30;
         attackSpeed = baseAttackSpeed * attackSpeedMult;
+        Blink();
+        Jump();
 
-        hp = Convert.ToInt32(baseHp * hpMult);
+        maxHp = Convert.ToInt32(baseHp * hpMult);
         w = Input.GetKey(KeyCode.W);
         a = Input.GetKey(KeyCode.A);
         s = Input.GetKey(KeyCode.S);
         d = Input.GetKey(KeyCode.D);
-
-        Jump();
 
         speed = baseSpeed * speedMult;
         Move();
@@ -98,6 +115,22 @@ public class PlayerController : MyEntity
     {
         if (other.gameObject.CompareTag("DragonJaw"))
         {
+        }
+    }
+
+    internal void Blink()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (blinkTimestamp <= Time.time)
+            {
+                Instantiate(blinkParticles, transform.position, blinkParticles.transform.rotation);
+                Vector3 destination = transform.position + transform.forward * blinkDistance;
+                transform.position = destination;
+                Instantiate(blinkParticles, transform.position, blinkParticles.transform.rotation);
+                uiManager.BlinkCooldown = 4;
+                blinkTimestamp = Time.time + 4; 
+            }
         }
     }
 
@@ -175,13 +208,54 @@ public class PlayerController : MyEntity
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
             anim.SetTrigger(jumpHash);
             //rb.velocity = transform.up * Time.deltaTime * jumpForce;
             rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
+            isGrounded = false;
+        }
+    }
 
-            
+    void LevelUpCheck()
+    {
+        if (experience >= xpForLevelUp)
+        {
+            LevelUp();
+        }
+
+    }
+
+    void LevelUp()
+    {
+        level += 1;
+        experience -= xpForLevelUp;
+        xpForLevelUp *= 1.5f;
+
+        baseHp *= 1.1f;
+        baseSpeed *= 1.1f;
+        baseDamage *= 1.1f;
+        baseAttackSpeed *= 1.1f;
+    }
+
+    void HpRegen()
+    {
+        if (hp < maxHp)
+        {
+            hp += Convert.ToInt32(MathF.Ceiling(hp/100));
+        }
+
+        if (hp > maxHp)
+        {
+            hp = maxHp;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            isGrounded = true;
         }
     }
    

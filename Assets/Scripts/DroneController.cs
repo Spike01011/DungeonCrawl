@@ -12,6 +12,8 @@ public class DroneController : MonoBehaviour
     public Camera cam;
     private GameObject player;
     private PlayerController playerController;
+    public ParticleSystem friendlyParticle;
+    public ParticleSystem enemyParticle;
 
     //LineRenderer laserLine;
 
@@ -60,12 +62,14 @@ public class DroneController : MonoBehaviour
                 try
                 {
                     ToCritOrNotToCrit();
-                    var playerLaser = Instantiate(laserPrefab, transform.position, focus.transform.rotation);
-                    playerLaser.transform.rotation = Quaternion.Euler(transform.localRotation.eulerAngles.x + 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-                    var laserScript = playerLaser.GetComponent<LaserPlayer>();
-                    laserScript.speed = 6000f;
-                    laserScript.strength = damage;
-
+                    if (hit.transform.gameObject.CompareTag("Enemy"))
+                    {
+                        Instantiate(enemyParticle, hit.transform.position, enemyParticle.transform.rotation);
+                    }
+                    else
+                    {
+                        Instantiate(friendlyParticle, hit.point, friendlyParticle.transform.rotation);
+                    }
                     hit.transform.gameObject.GetComponent<MyEntity>().takeDamage(damage, "enemy");
                 }
                 catch (Exception e)
