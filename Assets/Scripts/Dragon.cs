@@ -33,7 +33,7 @@ public class Dragon : MyEntity
         baseDamage = 10f;
         baseAttackSpeed = 1f;
         baseHp = 70f;
-        baseSpeed = 300f;
+        baseSpeed = 500f;
 
         speedMult = 1.0f;
         attackSpeedMult = 1.0f;

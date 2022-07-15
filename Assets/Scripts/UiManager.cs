@@ -33,6 +33,7 @@ public class UiManager : MonoBehaviour
         messageDisplayTimestamp = Time.time + 1;
         BlinkCooldown = 0;
         BlinkText.text = $"Blink: READY";
+        minutes = 0;
     }
 
     // Update is called once per frame
@@ -86,7 +87,6 @@ public class UiManager : MonoBehaviour
     void InGameTimer()
     {
         secondsPassed += 1;
-        minutes = 0;
         int seconds;
         while (secondsPassed > 60)
         {
@@ -96,8 +96,6 @@ public class UiManager : MonoBehaviour
         seconds = secondsPassed;
         string minutesString = Convert.ToString(minutes);
         string secondsString = Convert.ToString(seconds);
-        Debug.Log("minutesString: " + minutesString);
-        Debug.Log("secondsString: " + secondsString);
         if (minutesString.Length < 2)
         {
             minutesString = "0" + minutesString;

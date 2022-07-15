@@ -29,7 +29,7 @@ public class EnemyDrone : MyEntity
         baseDamage = 15f;
         baseAttackSpeed = 1f;
         baseHp = 30f;
-        baseSpeed = 200f;
+        baseSpeed = 350f;
 
         speedMult = 1.0f;
         attackSpeedMult = 1.0f;

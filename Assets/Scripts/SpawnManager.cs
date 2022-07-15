@@ -27,6 +27,7 @@ public class SpawnManager : MonoBehaviour
         InvokeRepeating("ManageMult", 60, 60);
         overallMult = 1.0f;
         spawnLocationVarietyRange = 50;
+        Invoke("IncreaseDropRate", 2);
     }
 
     // Update is called once per frame
@@ -63,11 +64,20 @@ public class SpawnManager : MonoBehaviour
 
     public void TryToSpawnItem(Vector3 location)
     {
-        int itemSpawnRng = Random.Range(0, 10);
-        if (itemSpawnRng <= (itemSpawnRate / 10) - 1)
+        int itemSpawnRng = Random.Range(0, 100);
+        if (itemSpawnRng <= (itemSpawnRate) - 1)
         {
             var randomItemToSpawn = Random.Range(0, itemList.Count);
             Instantiate(itemList[randomItemToSpawn], location, Quaternion.Euler(0, 0, 0));
+        }
+    }
+
+    void IncreaseDropRate()
+    {
+        itemSpawnRate += 1;
+        if (itemSpawnRate < 20)
+        {
+            Invoke("IncreaseDropRate", 2);
         }
     }
 }
