@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public abstract class MyEntity : MyMasterEntity
@@ -61,8 +63,24 @@ public abstract class MyEntity : MyMasterEntity
     public void Die()
     {
         Player.GetComponent<PlayerController>().experience += experience * experienceMult;
+        Player.GetComponent<PlayerController>().kills += 1;
         spawnManager.experience += experience * experienceMult;
         spawnManager.TryToSpawnItem(new Vector3(transform.position.x, 0.5f, transform.position.z));
+        if (this.gameObject.CompareTag("Player"))
+        {
+            spawnManager.playerIsDead = true;
+            spawnManager.playerKills = Player.GetComponent<PlayerController>().kills;
+            Invoke("KillPlayer", 10);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    public void KillPlayer()
+    {
         Destroy(gameObject);
     }
 }

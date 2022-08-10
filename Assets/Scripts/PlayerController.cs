@@ -12,6 +12,9 @@ public class PlayerController : MyEntity
     private GameObject cameraFocusPoint;
     private UiManager uiManager;
 
+    public bool isDead;
+    public int kills;
+
 
     [SerializeField] private float runAngleModifier = 0;
     [SerializeField] private float jumpDurationMulti;
@@ -50,6 +53,8 @@ public class PlayerController : MyEntity
     // Start is called before the first frame update
     internal override void Start()
     {
+        kills = 0;
+        isDead = false;
         uiManager = GameObject.Find("UIManager").GetComponent<UiManager>();
         Player = gameObject;
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();

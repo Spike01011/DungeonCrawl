@@ -7,8 +7,6 @@ using Random = UnityEngine.Random;
 
 public class DroneController : MonoBehaviour
 {
-    public GameObject laserPrefab;
-    public GameObject specialPrefab;
     public Camera cam;
     private GameObject player;
     private PlayerController playerController;
@@ -94,7 +92,7 @@ public class DroneController : MonoBehaviour
         {
             currentShotDamage = damage;
         }
-        else if (critChance == 100)
+        else if (critChance >= 100)
         {
             currentShotDamage = damage * 2;
         }

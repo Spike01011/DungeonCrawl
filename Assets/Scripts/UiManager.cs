@@ -19,8 +19,8 @@ public class UiManager : MonoBehaviour
     private float oldLevel;
     private float currentLevel;
     internal float BlinkCooldown;
-    private int secondsPassed;
-    private int minutes;
+    public int secondsPassed;
+    public int minutes;
 
 
     // Start is called before the first frame update
@@ -86,26 +86,31 @@ public class UiManager : MonoBehaviour
 
     void InGameTimer()
     {
-        secondsPassed += 1;
-        int seconds;
-        while (secondsPassed > 60)
+        if (!playerScript.isDead)
         {
-            minutes += 1;
-            secondsPassed -= 60;
-        }
-        seconds = secondsPassed;
-        string minutesString = Convert.ToString(minutes);
-        string secondsString = Convert.ToString(seconds);
-        if (minutesString.Length < 2)
-        {
-            minutesString = "0" + minutesString;
-        }
+            secondsPassed += 1;
+            int seconds;
+            while (secondsPassed > 60)
+            {
+                minutes += 1;
+                secondsPassed -= 60;
+            }
 
-        if (secondsString.Length < 2)
-        {
-            secondsString = "0" + secondsString;
+            seconds = secondsPassed;
+            string minutesString = Convert.ToString(minutes);
+            string secondsString = Convert.ToString(seconds);
+            if (minutesString.Length < 2)
+            {
+                minutesString = "0" + minutesString;
+            }
+
+            if (secondsString.Length < 2)
+            {
+                secondsString = "0" + secondsString;
+            }
+
+            TimeText.text = $"Time: {minutesString}:{secondsString}";
         }
-        TimeText.text = $"Time: {minutesString}:{secondsString}";
     }
 
 

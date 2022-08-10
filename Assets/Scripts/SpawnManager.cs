@@ -1,8 +1,17 @@
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts;
+using Newtonsoft.Json;
+using OpenCover.Framework.Model;
 using Unity.VisualScripting;
 using UnityEngine;
+using File = System.IO.File;
+using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -10,6 +19,7 @@ public class SpawnManager : MonoBehaviour
     public List<GameObject> itemList = new List<GameObject>();
     private Dictionary<GameObject, float> spawnsAndCosts = new Dictionary<GameObject, float>();
     private GameObject player;
+    private UiManager uiManager;
 
     private Dictionary<GameObject, float> affordableSpawns;
 
@@ -18,9 +28,13 @@ public class SpawnManager : MonoBehaviour
     private float overallMult;
     private float experienceMult;
     internal float experience;
+
+    internal bool playerIsDead;
+    internal int playerKills;
     // Start is called before the first frame update
     void Start()
     {
+        playerIsDead = false;
         player = GameObject.Find("Player");
         experience = 100;
         spawnsAndCosts[enemyList[0]] = 15;
@@ -31,6 +45,7 @@ public class SpawnManager : MonoBehaviour
         spawnLocationVarietyRange = 50;
         Invoke("IncreaseDropRate", 120);
         InvokeRepeating("DifficultyBoost", 300, 300);
+        uiManager = GameObject.Find("UIManager").GetComponent<UiManager>();
     }
 
     // Update is called once per frame
@@ -58,6 +73,11 @@ public class SpawnManager : MonoBehaviour
             experience -= spawnsAndCosts.Values.ElementAt(randomEnemyToSpawn);
         }
         affordableSpawns.Clear();
+
+        if (playerIsDead)
+        {
+            SaveData();
+        }
     }
 
     void ManageMult()
@@ -87,6 +107,46 @@ public class SpawnManager : MonoBehaviour
         if (itemSpawnRate < 20)
         {
             Invoke("IncreaseDropRate", 120);
+        }
+    }
+
+    void SaveData()
+    {
+        string readData;
+        SaveData _data;
+        try
+        {
+            readData = File.ReadAllText($@"Save.json");
+            _data = JsonConvert.DeserializeObject(readData) as SaveData;
+        }
+        catch (Exception e)
+        {
+            _data = new SaveData() { MostKills = 0, MostTimeSurvived = 0, TotalKills = 0, TotalTimeSurived = 0 };
+        }
+
+        SaveData _newData = new SaveData() { MostKills = 0, MostTimeSurvived = 0, TotalKills = 0, TotalTimeSurived = 0 };
+        if (playerKills > _data.MostKills)
+        {
+            _newData.MostKills = playerKills;
+        }
+
+        if ((uiManager.minutes * 60 + uiManager.secondsPassed) > _data.MostTimeSurvived)
+        {
+            _newData.MostTimeSurvived = uiManager.minutes * 60 + uiManager.secondsPassed;
+        }
+
+        _newData.TotalKills = _data.TotalKills + playerKills;
+        _newData.TotalTimeSurived = _data.TotalTimeSurived + uiManager.minutes * 60 + uiManager.secondsPassed;
+        var json = JsonConvert.SerializeObject(_newData);
+        var currentLocation = Directory.GetCurrentDirectory();
+        try
+        {
+            File.WriteAllText($@"Save.json", json);
+        }
+        catch (Exception e)
+        {
+            File.Create($@"Save.json");
+            File.WriteAllText($@"Save.json", json);
         }
     }
 }
