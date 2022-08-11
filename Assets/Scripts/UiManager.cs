@@ -13,6 +13,8 @@ public class UiManager : MonoBehaviour
     public TextMeshProUGUI TimeText;
     private PlayerController playerScript;
 
+    internal bool playerIsDead;
+
     private float messageDisplayTimestamp;
     private float oldHp;
     private float currentHp;
@@ -26,6 +28,7 @@ public class UiManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerIsDead = false;
         TimeText.text = $"Time : 00:00";
         InvokeRepeating("InGameTimer", 1, 1);
         playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
@@ -86,7 +89,7 @@ public class UiManager : MonoBehaviour
 
     void InGameTimer()
     {
-        if (!playerScript.isDead)
+        if (!playerIsDead)
         {
             secondsPassed += 1;
             int seconds;

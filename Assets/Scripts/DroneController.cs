@@ -70,7 +70,7 @@ public class DroneController : MonoBehaviour
                     }
                     hit.transform.gameObject.GetComponent<MyEntity>().takeDamage(damage, "enemy");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
                 timestamp = Time.time + 1 / attackSpeed;

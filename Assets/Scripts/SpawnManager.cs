@@ -1,14 +1,9 @@
 using System;
 using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts;
 using Newtonsoft.Json;
-using OpenCover.Framework.Model;
-using Unity.VisualScripting;
 using UnityEngine;
 using File = System.IO.File;
 using Random = UnityEngine.Random;
@@ -110,17 +105,18 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    void SaveData()
+    internal void SaveData()
     {
         string readData;
         SaveData _data;
         try
         {
             readData = File.ReadAllText($@"Save.json");
-            _data = JsonConvert.DeserializeObject(readData) as SaveData;
+            _data = JsonConvert.DeserializeObject<SaveData>(readData)!;
         }
         catch (Exception e)
         {
+            Debug.LogError(e);
             _data = new SaveData() { MostKills = 0, MostTimeSurvived = 0, TotalKills = 0, TotalTimeSurived = 0 };
         }
 
@@ -129,10 +125,18 @@ public class SpawnManager : MonoBehaviour
         {
             _newData.MostKills = playerKills;
         }
+        else
+        {
+            _newData.MostKills = _data.MostKills;
+        }
 
         if ((uiManager.minutes * 60 + uiManager.secondsPassed) > _data.MostTimeSurvived)
         {
             _newData.MostTimeSurvived = uiManager.minutes * 60 + uiManager.secondsPassed;
+        }
+        else
+        {
+            _newData.MostTimeSurvived = _data.MostTimeSurvived;
         }
 
         _newData.TotalKills = _data.TotalKills + playerKills;
@@ -145,6 +149,7 @@ public class SpawnManager : MonoBehaviour
         }
         catch (Exception e)
         {
+            Debug.LogError(e);
             File.Create($@"Save.json");
             File.WriteAllText($@"Save.json", json);
         }

@@ -1,5 +1,9 @@
-﻿namespace Assets.Scripts
+﻿using System;
+using UnityEngine;
+
+namespace Assets.Scripts
 {
+    [Serializable]
     public class SaveData
     {
         public int MostKills { get; set; }
