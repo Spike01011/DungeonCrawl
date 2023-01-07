@@ -27,3 +27,10 @@
 6. For the `Scenes in Build` make sure only `Scenes/SampleScene` is selected. Leave everything else as is.
 7. Press Build. Select the Folder where you want the build to be.
 8. Now whenever you want to play the game, go to the folder where the build is and double click `Roguelike5.exe`.
+
+
+![running](MdPhotos/running.png)
+![jumping](MdPhotos/jumping.png)
+![hitting](MdPhotos/hitting.png)
+![missing](MdPhotos/missing.png)
+![teleporting](MdPhotos/teleporting.png)
