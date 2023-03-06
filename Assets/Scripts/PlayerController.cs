@@ -53,6 +53,7 @@ public class PlayerController : MyEntity
     // Start is called before the first frame update
     internal override void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         kills = 0;
         isDead = false;
         uiManager = GameObject.Find("UIManager").GetComponent<UiManager>();
@@ -263,5 +264,11 @@ public class PlayerController : MyEntity
             isGrounded = true;
         }
     }
-   
+
+    void OnDestroy()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Application.Quit(0);
+    }
+
 }
